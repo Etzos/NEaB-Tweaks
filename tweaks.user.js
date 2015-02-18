@@ -16,7 +16,7 @@
 // ==UserScript==
 // @name        NEaB Tweaks
 // @namespace   http://garth.web.nowhere-else.org/web/
-// @version     0.3.1
+// @version     0.3.2
 // @description Quick fixes for various bugs and issues with NEaB
 // @updateURL   https://rawgit.com/Etzos/NEaB-Tweaks/master/tweaks.user.js
 
@@ -36,7 +36,7 @@
 // @match       *://nowhere-else.org/player_info.php*
 // @match       *://*.nowhere-else.org/player_info.php*
 
-// @require     https://rawgit.com/sizzlemctwizzle/GM_config/050978c9d41245b135404a3692ac42418a09be24/gm_config.js
+// @require     https://rawgit.com/sizzlemctwizzle/GM_config/b371c6750bd51a74140ee5a744937777433614d8/gm_config.js
 // @require     https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js
 // @copyright   2013-2014+, Kevin Ott
 // @grants      none
@@ -83,10 +83,11 @@ GM_config.init({
         'type': 'checkbox',
         'default': true
     },
-    'JournalDate': {
-        'label': "Journal: Sort entries by date (most recent first)",
-        'type': 'checkbox',
-        default: false
+    'JournalSort': {
+        'label': "Journal: Sort entries by which method:",
+        'type': 'select',
+        'options': ['Alphabetical', 'Date Ascending', 'Date Descending'],
+        'default': 'Alphabetical'
     }
 });
 
@@ -129,13 +130,16 @@ var Util = {
      * Inserts a script into the body of the document
      *
      * @param {string} contents - The script to insert
+     * @param {boolean} [leave=true] - Whether to leave the script intact on the page or not
      */
-    insertScript: function(contents) {
+    insertScript: function(contents, leave) {
         var script = document.createElement('script');
         script.setAttribute("type", "application/javascript");
         script.textContent = contents;
         document.body.appendChild(script);
-        document.body.removeChild(script);
+        if (typeof leave != "undefined" && !leave) {
+           document.body.removeChild(script);
+        }
     }
 }
 
@@ -564,10 +568,12 @@ if(locStr.match(/nbase\.php/)) {                    // Page: nbase.php
             });
         }
 
-    } else if(locStr.indexOf("SHOPQUERY=") > -1 || locStr.indexOf("NEWLOC=23") > -1) { // Market Place
+    } else if (locStr.indexOf("SHOPQUERY=") > -1 || locStr.indexOf("NEWLOC=23") > -1) { // Market Place
         Fixes.marketSubmit();
     } else if (locStr.indexOf("ACTION=JOURNAL") > -1) { // Journal
-        if(GM_config.get("JournalDate") == true) {
+        var journalDir = GM_config.get("JournalSort");
+        if (journalDir != "Alphabetical") {
+            var asc = (journalDir == "Date Ascending");
             function redraw_journal() {
                 quests.sort(function(a, b) {
                     var d1 = a.entries[a.entries.length-1].created.split("/");
@@ -582,11 +588,16 @@ if(locStr.match(/nbase\.php/)) {                    // Page: nbase.php
                     }
                     return 0;
                 });
+                if (asc) {
+                    quests.reverse();
+                }
                 var entries = redraw_quests();
                redraw_entries(entries);
             }
 
-            Util.insertScript(redraw_journal.toString() + "\nredraw_journal();");
+            Util.insertScript(redraw_journal.toString() + "\n" +
+                              "var asc = " + ((asc) ? "true" : "false") + ";\n" +
+                              "redraw_journal();");
         }
     } else if (locStr.indexOf("ADMIN=CHATLOGS") > -1) {
         // Constants

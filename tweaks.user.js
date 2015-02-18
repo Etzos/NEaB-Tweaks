@@ -1,4 +1,4 @@
-/* Copyright (c) 2013-2014 Kevin Ott (aka Etzos) <supercodingmonkey@gmail.com>
+/* Copyright (c) 2013-2015 Kevin Ott (aka Etzos) <supercodingmonkey@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -38,7 +38,7 @@
 
 // @require     https://rawgit.com/sizzlemctwizzle/GM_config/b371c6750bd51a74140ee5a744937777433614d8/gm_config.js
 // @require     https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js
-// @copyright   2013-2014+, Kevin Ott
+// @copyright   2013-2015+, Kevin Ott
 // @grants      none
 // @run-at      document-end
 // ==/UserScript==
@@ -48,15 +48,15 @@
 
 // -- Config Section -- //
 GM_config.init({
-    'HorizontalCombat': {
-        'label': 'Combat: Make the combat layout more widescreen friendly.',
-        'type': 'checkbox',
-        'default': true
+    "HorizontalCombat": {
+        "label": "Combat: Make the combat layout more widescreen friendly.",
+        "type": "checkbox",
+        "default": true
     },
-    'HotkeyCombat': {
-        'label': 'Combat: Fix hotkeys causing combat to blow up',
-        'type': 'checkbox',
-        'default': true
+    "HotkeyCombat": {
+        "label": "Combat: Fix hotkeys causing combat to blow up",
+        "type": "checkbox",
+        "default": true
     },
     "FixCombatOverlay": {
         "label": "Combat: Fix the position and placement of the background overlay",
@@ -73,21 +73,21 @@ GM_config.init({
         "type": "checkbox",
         "default": true
     },
-    'MoveMapMessages': {
-        'label': 'Map: Move the message box to the right side for better visibility',
-        'type': 'checkbox',
-        'default': true
+    "MoveMapMessages": {
+        "label": "Map: Move the message box to the right side for better visibility",
+        "type": "checkbox",
+        "default": true
     },
-    'MoveMapUp': {
-        'label': "Map: Move the 2d map view up to cover the area the embedded chat should be in",
-        'type': 'checkbox',
-        'default': true
+    "MoveMapUp": {
+        "label": "Map: Move the 2d map view up to cover the area the embedded chat should be in",
+        "type": "checkbox",
+        "default": true
     },
-    'JournalSort': {
-        'label': "Journal: Sort entries by which method:",
-        'type': 'select',
-        'options': ['Alphabetical', 'Date Ascending', 'Date Descending'],
-        'default': 'Alphabetical'
+    "JournalSort": {
+        "label": "Journal: Sort entries by which method:",
+        "type": "select",
+        "options": ["Alphabetical", "Date Ascending", "Date Descending"],
+        "default": "Alphabetical"
     }
 });
 
@@ -109,13 +109,13 @@ var Util = {
      */
     intPostfix: function(number) {
         // Special cases
-        if(number < 1) {
+        if (number < 1) {
             return "";
-        } else if(number > 10 && number < 20) {
+        } else if (number > 10 && number < 20) {
             return "th";
         }
         var leastSig = number % 10;
-        switch(leastSig) {
+        switch (leastSig) {
             case 1:
                 return "st";
             case 2:
@@ -133,7 +133,7 @@ var Util = {
      * @param {boolean} [leave=true] - Whether to leave the script intact on the page or not
      */
     insertScript: function(contents, leave) {
-        var script = document.createElement('script');
+        var script = document.createElement("script");
         script.setAttribute("type", "application/javascript");
         script.textContent = contents;
         document.body.appendChild(script);
@@ -146,8 +146,8 @@ var Util = {
 var Fixes = {
     // Inserts the config for these scripts into the page
     insertConfig: function() {
-        var $context = Util.getFrameWin('MENUFRAME').document;
-        var table = $context.getElementsByTagName('table')[0].children[0].children[0];
+        var $context = Util.getFrameWin("MENUFRAME").document;
+        var table = $context.getElementsByTagName("table")[0].children[0].children[0];
 
         table.innerHTML += '<td><img src="images/vert_sep_3.gif" height="20" width="15"></td>' +
             "<td><a href='#' id='neab-tweak-settings' onClick='return false;'>NEaB Tweak Settings</a></td>";
@@ -155,12 +155,12 @@ var Fixes = {
         table.innerHTML += '<td><img src="images/vert_sep_3.gif" height="20" width="15"></td>' +
             '<td><a href="#" id="neab-tweak-reload-mainframe" onClick="return false;">Reload Content</a></td>';
 
-        $context.getElementById('neab-tweak-settings').addEventListener('click', function() {
+        $context.getElementById("neab-tweak-settings").addEventListener("click", function() {
             GM_config.open();
         });
-        $context.getElementById('neab-tweak-reload-mainframe').addEventListener('click', function() {
-            Util.getFrameWin('MAINFRAME').location.reload();
-            Util.getFrameWin('MAPGRID').location.reload();
+        $context.getElementById("neab-tweak-reload-mainframe").addEventListener("click", function() {
+            Util.getFrameWin("MAINFRAME").location.reload();
+            Util.getFrameWin("MAPGRID").location.reload();
         });
     },
     // Modifies combat to the horizontal layout
@@ -172,14 +172,14 @@ var Fixes = {
 
         var widthBy = 300;
         var heightBy = 150;
-        msf.style.width = (parseInt(msf.style.width) + widthBy) + 'px';
-        msf.style.height = (parseInt(msf.style.height) - heightBy) + 'px';
+        msf.style.width = (parseInt(msf.style.width) + widthBy) + "px";
+        msf.style.height = (parseInt(msf.style.height) - heightBy) + "px";
 
-        msfCont.style.width = (parseInt(msfCont.style.width) + widthBy) + 'px';
-        msfCont.style.height = (parseInt(msfCont.style.height) - heightBy) + 'px';
+        msfCont.style.width = (parseInt(msfCont.style.width) + widthBy) + "px";
+        msfCont.style.height = (parseInt(msfCont.style.height) - heightBy) + "px";
 
-        msfCont.style.left = (parseInt(msfCont.style.left) - 150) + 'px';
-        msf.style.left = (parseInt(msf.style.left) - 150) + 'px';
+        msfCont.style.left = (parseInt(msfCont.style.left) - 150) + "px";
+        msf.style.left = (parseInt(msf.style.left) - 150) + "px";
 
         // Move the message and chat boxes
         var $ref = document.getElementById("DIV_ACT_SELECT");
@@ -188,23 +188,23 @@ var Fixes = {
         var $chatBox = $mesBox.nextSibling;
         var $chatInput = $chatBox.nextSibling;
 
-        $mesBox.style.top = '0px';
-        $mesBox.style.left = '650px';
+        $mesBox.style.top = "0px";
+        $mesBox.style.left = "650px";
 
         var $msg = document.getElementById("MESSAGES");
-        $msg.style.height = '220px';
+        $msg.style.height = "220px";
 
-        $chatBox.style.top = '250px';
-        $chatBox.style.left = '650px';
+        $chatBox.style.top = "250px";
+        $chatBox.style.left = "650px";
 
-        document.getElementById("CHATLOG").style.height = '170px';
+        document.getElementById("CHATLOG").style.height = "170px";
 
-        $chatInput.style.top = '455px';
-        $chatInput.style.left = '650px';
+        $chatInput.style.top = "455px";
+        $chatInput.style.left = "650px";
     },
     // Moves the message box
     mapMoveMessageBox: function() {
-        document.getElementById("MESSAGES").style.right = '5px';
+        document.getElementById("MESSAGES").style.right = "5px";
     },
     // Reseets and modifies the statue pages
     resetStatueBoxes: function($input) {
@@ -215,7 +215,7 @@ var Fixes = {
         $extra.style.fontWeight = "bold";
         $parent.appendChild($extra);
 
-        if(originalVal > 10) {
+        if (originalVal > 10) {
             $input.value = 10;
         }
         $input.focus();
@@ -225,9 +225,9 @@ var Fixes = {
     // Set the market search box to submit on Enter
     marketSubmit: function() {
         document.addEventListener("keyup", function(event) {
-            if(event.keyCode == 13) {
+            if (event.keyCode == 13) {
                 var elem = document.activeElement;
-                if(elem.name == "ITEMQUERY" && elem.value != "") {
+                if (elem.name == "ITEMQUERY" && elem.value != "") {
                     document.getElementsByName("ITEMSEARCH")[0].submit();
                 }
             }
@@ -238,12 +238,12 @@ var Fixes = {
 // -- Page Load Handler
 var locStr = window.location.href;
 
-if(locStr.match(/nbase\.php/)) {                    // Page: nbase.php
+if (locStr.match(/nbase\.php/)) {                    // Page: nbase.php
     Fixes.insertConfig();
 
     // The stuff below makes the map area look correct (if embedded chat is disabled)
     // Make it look correct initially
-    if(GM_config.get('MoveMapUp') == true) {
+    if (GM_config.get("MoveMapUp")) {
         var $cont = document.getElementById("MAPGRID");
         $cont.style.top = "20px";
         $cont.style.height = (parseInt($cont.style.height, 10) + 20) + "px";
@@ -257,11 +257,11 @@ if(locStr.match(/nbase\.php/)) {                    // Page: nbase.php
             var w = document.body.clientWidth;
             var h = document.body.clientHeight;
 
-            document.getElementById('MENUFRAME').style.width = w-1;
+            document.getElementById("MENUFRAME").style.width = w-1;
 
-            var div = document.getElementById('MAPGRID');
+            var div = document.getElementById("MAPGRID");
 
-            if(window.frames['MAPGRID'].graphicGUI == true) {
+            if (window.frames["MAPGRID"].graphicGUI == true) {
                 div.style.left = 0;
                 div.style.width = w-2;
             } else {
@@ -269,9 +269,9 @@ if(locStr.match(/nbase\.php/)) {                    // Page: nbase.php
                 div.style.width = w-203;
             }
 
-            if(window.frames['MAPGRID'].graphicGUI == true) {
+            if (window.frames["MAPGRID"].graphicGUI == true) {
                 div.style.height = h-(25+titleHeight);
-            } else if(window.frames['MAPGRID'].fullscreen) {
+            } else if (window.frames["MAPGRID"].fullscreen) {
                 div.style.height = h-(52+titleHeight);
             } else {
                 div.style.height = 680;
@@ -280,12 +280,12 @@ if(locStr.match(/nbase\.php/)) {                    // Page: nbase.php
             div.style.top = "20px";
             div.style.height = (parseInt(div.style.height, 10)+20) + "px";
 
-            div = document.getElementById('MAINFRAME');
+            div = document.getElementById("MAINFRAME");
             div.style.height = h-22;
             div.style.width = w-1;
 
-            if(recurse == null || recurse == undefined || recurse < 2) {
-                if(recurse == null || recurse == undefined) {
+            if (recurse == null || recurse == undefined || recurse < 2) {
+                if (recurse == null || recurse == undefined) {
                     recurse = 0;
                 }
                 resizeTimeout = setTimeout("do_resize("+(recurse+1)+");",500);
@@ -295,20 +295,19 @@ if(locStr.match(/nbase\.php/)) {                    // Page: nbase.php
         Util.insertScript(do_resize.toString());
     }
 
-} else if(locStr.match(/game\.php/)) {              // Page: game.php
+} else if (locStr.match(/game\.php/)) {              // Page: game.php
     // TODO: Reloading the page actually changes the URL to just game.php with no query, this makes
     //       detection of location a tad more complicated. So... Do something about it.
-    if(locStr.indexOf("SUBCOMBAT=TRUE") > -1) {
-        if(GM_config.get('HorizontalCombat') == true) {
+    if (locStr.indexOf("SUBCOMBAT=TRUE") > -1) {
+        if (GM_config.get("HorizontalCombat")) {
             Fixes.horizontalCombat();
         }
 
-        if(GM_config.get('HotkeyCombat') == true) {
+        if (GM_config.get("HotkeyCombat")) {
             function exec_key(key) {
-                if ((key == kb.ENTER || key == kb.ESCAPE) && tostop) 
-                {
+                if ((key == kb.ENTER || key == kb.ESCAPE) && tostop) {
                     window.top.closeSubPanel(true);
-                    window.top.document.getElementById('MAINFRAME').src = endCombat;
+                    window.top.document.getElementById("MAINFRAME").src = endCombat;
                     return;
                 }
                 if (disablemove)
@@ -317,8 +316,7 @@ if(locStr.match(/nbase\.php/)) {                    // Page: nbase.php
                 if ((48 <= key && key <= 57) || (65 <= key && key <= 90))
                     keyHandled = execActionKey(String.fromCharCode(key));
                 if (!keyHandled)
-                    switch (key) 
-                    {
+                    switch (key) {
                         case kb.ESCAPE:
                             flee();
                             return;
@@ -331,24 +329,17 @@ if(locStr.match(/nbase\.php/)) {                    // Page: nbase.php
                         case 102:
                             cells[px][py] = 0;
                             dir = 'e';
-                            if (px >= 9) 
-                            {
+                            if (px >= 9) {
                                 cells[px][py] = -1;
                                 return;
-                            } 
-                            else if (havepet == true && px + 1 == pet_x && py == pet_y) 
-                            {
+                            } else if (havepet == true && px + 1 == pet_x && py == pet_y) {
                                 cells[px][py] = -1;
                                 return;
-                            } 
-                            else if (px < 9 && cells[px + 1][py] > 0 && (ap > 2 || freeattack)) 
-                            {
+                            } else if (px < 9 && cells[px + 1][py] > 0 && (ap > 2 || freeattack)) {
                                 cells[px][py] = -1;
                                 attack(cells[px + 1][py] - 1, px + 1, py);
                                 return;
-                            } 
-                            else if (px < 9 && cells[px + 1][py] == 0 && ap > 0) 
-                            {
+                            } else if (px < 9 && cells[px + 1][py] == 0 && ap > 0) {
                                 ap--;
                                 px++;
                             }
@@ -358,24 +349,17 @@ if(locStr.match(/nbase\.php/)) {                    // Page: nbase.php
                         case 100:
                             dir = 'w';
                             cells[px][py] = 0;
-                            if (px <= 0) 
-                            {
+                            if (px <= 0) {
                                 cells[px][py] = -1;
                                 return;
-                            } 
-                            else if (havepet == true && px - 1 == pet_x && py == pet_y) 
-                            {
+                            } else if (havepet == true && px - 1 == pet_x && py == pet_y) {
                                 cells[px][py] = -1;
                                 return;
-                            } 
-                            else if (px > 0 && cells[px - 1][py] > 0 && (ap > 2 || freeattack)) 
-                            {
+                            } else if (px > 0 && cells[px - 1][py] > 0 && (ap > 2 || freeattack)) {
                                 cells[px][py] = -1;
                                 attack(cells[px - 1][py] - 1, px - 1, py);
                                 return;
-                            } 
-                            else if (px > 0 && cells[px - 1][py] == 0 && ap > 0) 
-                            {
+                            } else if (px > 0 && cells[px - 1][py] == 0 && ap > 0) {
                                 ap--;
                                 px--;
                                 cells[px][py] = -1;
@@ -386,24 +370,17 @@ if(locStr.match(/nbase\.php/)) {                    // Page: nbase.php
                         case 104:
                             dir = 'n';
                             cells[px][py] = 0;
-                            if (py <= 0) 
-                            {
+                            if (py <= 0) {
                                 cells[px][py] = -1;
                                 return;
-                            } 
-                            else if (havepet == true && px == pet_x && py - 1 == pet_y) 
-                            {
+                            }  else if (havepet == true && px == pet_x && py - 1 == pet_y) {
                                 cells[px][py] = -1;
                                 return;
-                            } 
-                            else if (py > 0 && cells[px][py - 1] > 0 && (ap > 2 || freeattack)) 
-                            {
+                            } else if (py > 0 && cells[px][py - 1] > 0 && (ap > 2 || freeattack)) {
                                 cells[px][py] = -1;
                                 attack(cells[px][py - 1] - 1, px, py - 1);
                                 return;
-                            } 
-                            else if (py > 0 && cells[px][py - 1] == 0 && ap > 0) 
-                            {
+                            } else if (py > 0 && cells[px][py - 1] == 0 && ap > 0) {
                                 ap--;
                                 py--;
                                 cells[px][py] = -1;
@@ -415,24 +392,17 @@ if(locStr.match(/nbase\.php/)) {                    // Page: nbase.php
                         case 83:
                             cells[px][py] = 0;
                             dir = 's';
-                            if (py >= 6) 
-                            {
+                            if (py >= 6) {
                                 cells[px][py] = -1;
                                 return;
-                            } 
-                            else if (havepet == true && px == pet_x && py + 1 == pet_y) 
-                            {
+                            } else if (havepet == true && px == pet_x && py + 1 == pet_y) {
                                 cells[px][py] = -1;
                                 return;
-                            } 
-                            else if (py < 6 && cells[px][py + 1] > 0 && (ap > 2 || freeattack)) 
-                            {
+                            } else if (py < 6 && cells[px][py + 1] > 0 && (ap > 2 || freeattack)) {
                                 cells[px][py] = -1;
                                 attack(cells[px][py + 1] - 1, px, py + 1);
                                 return;
-                            } 
-                            else if (py < 6 && cells[px][py + 1] == 0 && ap > 0) 
-                            {
+                            } else if (py < 6 && cells[px][py + 1] == 0 && ap > 0) {
                                 ap--;
                                 py++;
                                 cells[px][py] = -1;
@@ -474,10 +444,9 @@ if(locStr.match(/nbase\.php/)) {                    // Page: nbase.php
                 document.getElementById("AP_STAT").src = "images/ap_" + ap + ".gif";
                 document.getElementById("PLAYER").style.left = px * 64;
                 document.getElementById("PLAYER").style.top = py * 64;
-                document.images["PLAYERICON"].src = 'players/' + prefix + iconid + '_' + dir + '.gif';
+                document.images["PLAYERICON"].src = "players/" + prefix + iconid + "_" + dir + ".gif";
                 checkCommands();
-                if (ap <= 0 && freeattack == false && keyHandled == false) 
-                {
+                if (ap <= 0 && freeattack == false && keyHandled == false) {
                     disableCommands();
                     serverMessage("POS&PX=" + px + "&PY=" + py, continueAttack);
                 }
@@ -485,7 +454,7 @@ if(locStr.match(/nbase\.php/)) {                    // Page: nbase.php
             Util.insertScript(exec_key.toString());
         }
 
-        if(GM_config.get("FixCombatOverlay") == true) {
+        if (GM_config.get("FixCombatOverlay")) {
             var elem = $("#DIV_BGSUBFRAME", window.top.document);
             elem.css({
                 "right": "0px",
@@ -496,7 +465,7 @@ if(locStr.match(/nbase\.php/)) {                    // Page: nbase.php
             });
         }
 
-        if(GM_config.get("CombatDimBars") == true) {
+        if (GM_config.get("CombatDimBars")) {
             var css = "<style>" +
                 "#combatBarContainer { transition: opacity 0.3s ease-in; color: black; height: 50px; width: 640px; position: absolute; top: 0px; left: 0px; }" +
                 "#combatBarContainer:hover { opacity: 0.3; text-decoration: none; color: black; }" +
@@ -531,7 +500,7 @@ if(locStr.match(/nbase\.php/)) {                    // Page: nbase.php
             $tmp.parent().focus();
         }
 
-        if(GM_config.get("MovableCombat") == true) {
+        if (GM_config.get("MovableCombat")) {
             var $grabBar = $("#MENU_DIV_SUBFRAME", window.top.document).closest("tr");
             var $moveElem = $("#DIV_SUBFRAME", window.top.document);
             var $tagAlong = $("#MENU_SUBFRAME", window.top.document);
@@ -547,7 +516,7 @@ if(locStr.match(/nbase\.php/)) {                    // Page: nbase.php
                     top: alsoPos.top - event.pageY,
                     left: alsoPos.left - event.pageX
                 };
-                var $body = $('body', window.top.document);
+                var $body = $("body", window.top.document);
 
                 $body.mousemove(function(event) {
                     $moveElem.css({
@@ -560,8 +529,8 @@ if(locStr.match(/nbase\.php/)) {                    // Page: nbase.php
                     });
                 });
 
-                $body.one('mouseup', function() {
-                    $(this).off('mousemove');
+                $body.one("mouseup", function() {
+                    $(this).off("mousemove");
                 });
 
                 event.preventDefault();
@@ -608,9 +577,9 @@ if(locStr.match(/nbase\.php/)) {                    // Page: nbase.php
         // Functions
         var newEntryObj = function(index, $anchor, list) {
             var name = $anchor.text().split(".")[0];
-            if(index == 0) {
+            if (index == 0) {
                 var now = new Date();
-                var nameParts = [ '', now.getFullYear(), now.getMonth()+1, now.getDate() ];
+                var nameParts = [ "", now.getFullYear(), now.getMonth()+1, now.getDate() ];
             } else {
                 var nameParts = name.split("-");
             }
@@ -630,13 +599,13 @@ if(locStr.match(/nbase\.php/)) {                    // Page: nbase.php
             var html = "";
             var len = list.length;
             var lastMonth = null;
-            for(var i = 0; i < len; ++i) {
+            for (var i = 0; i < len; ++i) {
                 var item = list[i];
                 var date = new Date(item.year, item.month-1, item.day);
 
                 // Month Divider
-                if(lastMonth != item.month) {
-                    if(lastMonth != null) {
+                if (lastMonth != item.month) {
+                    if (lastMonth != null) {
                         html += "</ul>"
                     }
                     html += "<div class='chatLogDivider'>" + MONTHS[item.month-1] + " " + item.year + "</div><ul class='chatLogList'>";
@@ -662,14 +631,14 @@ if(locStr.match(/nbase\.php/)) {                    // Page: nbase.php
         };
 
         var getCurrentItem = function() {
-            switch(currentItem.which) {
-                case 'lodge':
+            switch (currentItem.which) {
+                case "lodge":
                     return lodgeLogs[currentItem.index];
-                case 'newbie':
+                case "newbie":
                     return newbieLogs[currentItem.index];
                 default:
                     alert("Error: Unknown log type '" + currentItem.which + "'!");
-                    return '';
+                    return "";
             }
         };
 
@@ -683,18 +652,18 @@ if(locStr.match(/nbase\.php/)) {                    // Page: nbase.php
             var index = currentItem.index;
             var $newer = $("#chatLogNewerButton");
             var $older = $("#chatLogOlderButton");
-            switch(currentItem.which) {
-                case 'lodge':
+            switch (currentItem.which) {
+                case "lodge":
                     list = lodgeLogs;
                     break;
-                case 'newbie':
+                case "newbie":
                     list = newbieLogs;
                     break;
                 default:
                     console.error("Unable to change directional buttons, unknown chat log list.");
                     return;
             }
-            if(index >= list.length-1) {
+            if (index >= list.length-1) {
                 $older.html("Older &gt;")
                 $older.prop("disabled", true);
             } else {
@@ -702,12 +671,12 @@ if(locStr.match(/nbase\.php/)) {                    // Page: nbase.php
                 var oldItem = list[oldIndex];
                 $older.prop("disabled", false);
                 $older.html(oldItem.name + "&gt;");
-                $older.off().on('click', function() {
+                $older.off().on("click", function() {
                     setCurrentItem(oldItem.list, oldIndex);
                     loadChatLog();
                 });
             }
-            if(index < 1) {
+            if (index < 1) {
                 $newer.html("&lt; Newer");
                 $newer.prop("disabled", "disabled");
             } else {
@@ -715,7 +684,7 @@ if(locStr.match(/nbase\.php/)) {                    // Page: nbase.php
                 var newItem = list[newIndex];
                 $newer.prop("disabled", "");
                 $newer.html("&lt; " + newItem.name);
-                $newer.off().on('click', function() {
+                $newer.off().on("click", function() {
                     setCurrentItem(newItem.list, newIndex);
                     loadChatLog();
                 });
@@ -747,7 +716,7 @@ if(locStr.match(/nbase\.php/)) {                    // Page: nbase.php
 
                 setDirButtons();
                 $("#chatLogDirButton").show();
-            }, 'text');
+            }, "text");
         };
 
         // Inject CSS
@@ -770,7 +739,7 @@ if(locStr.match(/nbase\.php/)) {                    // Page: nbase.php
         // Variables
         var lodgeLogs = [];
         var newbieLogs = [];
-        var currentItem = { which: 'lodge', index: 0 };
+        var currentItem = { which: "lodge", index: 0 };
         var mainScrollLoc;
 
         var $header = $("body b:contains(Available logs)").parent().parent();
@@ -789,7 +758,7 @@ if(locStr.match(/nbase\.php/)) {                    // Page: nbase.php
         $header.empty().attr("id", "chatContainerHeader").html("<span id='chatLogBackButton'><button>&lt;Logs</button></span>" +
                                                                "<span id='chatLogTitle'>Available Logs</span>" +
                                                                "<span id='chatLogDirButton'><button id='chatLogNewerButton'>&lt; Newer</button><button id='chatLogOlderButton'>Older &lt;</button></span>");
-        $('#chatLogBackButton > button').click(function() {
+        $("#chatLogBackButton > button").click(function() {
             $("#logContent").hide();
             $("#logTable").show();
             $("#logContainer").scrollTop(mainScrollLoc);
@@ -805,17 +774,17 @@ if(locStr.match(/nbase\.php/)) {                    // Page: nbase.php
             // This fixes a really stupid rendering bug. The output actually has THREE links to the
             // current chat. On in the first li, one between the first and second li and one in the
             // second li. Stupid. Just. Plain. Stupid.
-            if(index == 1) {
+            if (index == 1) {
                 $anchor = $(this).find("a:nth-child(2)");
             }
-            lodgeLogs.push(newEntryObj(index, $anchor, 'lodge'));
+            lodgeLogs.push(newEntryObj(index, $anchor, "lodge"));
         });
         $newbieLi.filter("li").each(function(index) {
             var $anchor = $(this).find("a");
-            if(index == 1) {
+            if (index == 1) {
                 $anchor = $(this).find("a:nth-child(2)");
             }
-            newbieLogs.push(newEntryObj(index, $anchor, 'newbie'));
+            newbieLogs.push(newEntryObj(index, $anchor, "newbie"));
         });
 
         // Build the new lists and show it
@@ -832,24 +801,24 @@ if(locStr.match(/nbase\.php/)) {                    // Page: nbase.php
     } else {
         console.log(locStr);
     }
-} else if(locStr.match(/mapgrid\.php/)) {           // Page: mapgrid.php
-    if(GM_config.get('MoveMapMessages')) {
+} else if (locStr.match(/mapgrid\.php/)) {           // Page: mapgrid.php
+    if (GM_config.get("MoveMapMessages")) {
         Fixes.mapMoveMessageBox();
     }
-} else if(locStr.match(/statue\_scrubbing\.php/)) {
-    var $input = document.getElementsByName('SOAP_WATER')[0];
+} else if (locStr.match(/statue\_scrubbing\.php/)) {
+    var $input = document.getElementsByName("SOAP_WATER")[0];
     Fixes.resetStatueBoxes($input);
-} else if(locStr.match(/player\_info\.php/)) {
+} else if (locStr.match(/player\_info\.php/)) {
     var toRemoveFirst = ["Ban"];
     var toRemoveSecond = ["Trade"];
     var l = toRemoveFirst.length;
     var $tbl = $("table:eq(0)");
-    for(var i=0; i<l; i++) {
+    for (var i=0; i<l; i++) {
         $tbl.find("img[src='player_info.php?IMG=" + toRemoveFirst[i] + "']").parent().parent().remove();
     }
     l = toRemoveSecond.length;
     $tbl = $("table:eq(1)");
-    for(var i=0; i<l; i++) {
+    for (var i=0; i<l; i++) {
         $tbl.find("img[src='player_info.php?IMG=" + toRemoveSecond[i] + "']").parent().parent().remove();
     }
 } else {

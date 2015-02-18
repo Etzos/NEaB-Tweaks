@@ -18,7 +18,7 @@
 // @namespace   http://garth.web.nowhere-else.org/web/
 // @version     0.3.1
 // @description Quick fixes for various bugs and issues with NEaB
-// @updateURL   https://rawgit.com/Etzos/NEaB-Tweaks/tweaks.user.js
+// @updateURL   https://rawgit.com/Etzos/NEaB-Tweaks/master/tweaks.user.js
 
 // @match       *://www.nowhere-else.org/nbase.php
 // @match       *://nowhere-else.org/nbase.php

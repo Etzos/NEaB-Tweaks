@@ -14,5 +14,5 @@ How to install:
 
 1. For Firefox install [Greasmonkey](https://addons.mozilla.org/en-Us/firefox/addon/greasemonkey/),
    for Chrome install [Tampermonkey](https://chrome.google.com/webstore/detail/tampermonkey/dhdgffkkebhmkfjojejmpbldmpobfkfo?hl=en).
-2. Click on the link [here to install the script.](https://rawgit.com/Etzos/NEaB-Tweaks/tweaks.user.js)
+2. Click on the link [here to install the script.](https://rawgit.com/Etzos/NEaB-Tweaks/master/tweaks.user.js)
 3. Profit! (Updates should be detected somewhat automatically, so you always have the newest version)

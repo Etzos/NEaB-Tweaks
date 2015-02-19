@@ -16,7 +16,7 @@
 // ==UserScript==
 // @name        NEaB Tweaks
 // @namespace   http://garth.web.nowhere-else.org/web/
-// @version     0.3.2
+// @version     0.3.3
 // @description Quick fixes for various bugs and issues with NEaB
 // @updateURL   https://rawgit.com/Etzos/NEaB-Tweaks/master/tweaks.user.js
 

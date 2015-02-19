@@ -53,11 +53,6 @@ GM_config.init({
         "type": "checkbox",
         "default": true
     },
-    "HotkeyCombat": {
-        "label": "Combat: Fix hotkeys causing combat to blow up",
-        "type": "checkbox",
-        "default": true
-    },
     "FixCombatOverlay": {
         "label": "Combat: Fix the position and placement of the background overlay",
         "type": "checkbox",
@@ -82,12 +77,6 @@ GM_config.init({
         "label": "Map: Move the 2d map view up to cover the area the embedded chat should be in",
         "type": "checkbox",
         "default": true
-    },
-    "JournalSort": {
-        "label": "Journal: Sort entries by which method:",
-        "type": "select",
-        "options": ["Alphabetical", "Date Ascending", "Date Descending"],
-        "default": "Alphabetical"
     }
 });
 
@@ -303,157 +292,6 @@ if (locStr.match(/nbase\.php/)) {                    // Page: nbase.php
             Fixes.horizontalCombat();
         }
 
-        if (GM_config.get("HotkeyCombat")) {
-            function exec_key(key) {
-                if ((key == kb.ENTER || key == kb.ESCAPE) && tostop) {
-                    window.top.closeSubPanel(true);
-                    window.top.document.getElementById("MAINFRAME").src = endCombat;
-                    return;
-                }
-                if (disablemove)
-                    return;
-                var keyHandled = false;
-                if ((48 <= key && key <= 57) || (65 <= key && key <= 90))
-                    keyHandled = execActionKey(String.fromCharCode(key));
-                if (!keyHandled)
-                    switch (key) {
-                        case kb.ESCAPE:
-                            flee();
-                            return;
-                        case kb.ENTER:
-                        case kb.SPACE:
-                            skipTurn();
-                            return;
-                        case kb.RIGHT:
-                        case 0x44:
-                        case 102:
-                            cells[px][py] = 0;
-                            dir = 'e';
-                            if (px >= 9) {
-                                cells[px][py] = -1;
-                                return;
-                            } else if (havepet == true && px + 1 == pet_x && py == pet_y) {
-                                cells[px][py] = -1;
-                                return;
-                            } else if (px < 9 && cells[px + 1][py] > 0 && (ap > 2 || freeattack)) {
-                                cells[px][py] = -1;
-                                attack(cells[px + 1][py] - 1, px + 1, py);
-                                return;
-                            } else if (px < 9 && cells[px + 1][py] == 0 && ap > 0) {
-                                ap--;
-                                px++;
-                            }
-                            break;
-                        case kb.LEFT:
-                        case 0x41:
-                        case 100:
-                            dir = 'w';
-                            cells[px][py] = 0;
-                            if (px <= 0) {
-                                cells[px][py] = -1;
-                                return;
-                            } else if (havepet == true && px - 1 == pet_x && py == pet_y) {
-                                cells[px][py] = -1;
-                                return;
-                            } else if (px > 0 && cells[px - 1][py] > 0 && (ap > 2 || freeattack)) {
-                                cells[px][py] = -1;
-                                attack(cells[px - 1][py] - 1, px - 1, py);
-                                return;
-                            } else if (px > 0 && cells[px - 1][py] == 0 && ap > 0) {
-                                ap--;
-                                px--;
-                                cells[px][py] = -1;
-                            }
-                            break;
-                        case kb.UP:
-                        case 0x57:
-                        case 104:
-                            dir = 'n';
-                            cells[px][py] = 0;
-                            if (py <= 0) {
-                                cells[px][py] = -1;
-                                return;
-                            }  else if (havepet == true && px == pet_x && py - 1 == pet_y) {
-                                cells[px][py] = -1;
-                                return;
-                            } else if (py > 0 && cells[px][py - 1] > 0 && (ap > 2 || freeattack)) {
-                                cells[px][py] = -1;
-                                attack(cells[px][py - 1] - 1, px, py - 1);
-                                return;
-                            } else if (py > 0 && cells[px][py - 1] == 0 && ap > 0) {
-                                ap--;
-                                py--;
-                                cells[px][py] = -1;
-                            }
-                            break;
-                        case kb.DOWN:
-                        case 0x58:
-                        case 98:
-                        case 83:
-                            cells[px][py] = 0;
-                            dir = 's';
-                            if (py >= 6) {
-                                cells[px][py] = -1;
-                                return;
-                            } else if (havepet == true && px == pet_x && py + 1 == pet_y) {
-                                cells[px][py] = -1;
-                                return;
-                            } else if (py < 6 && cells[px][py + 1] > 0 && (ap > 2 || freeattack)) {
-                                cells[px][py] = -1;
-                                attack(cells[px][py + 1] - 1, px, py + 1);
-                                return;
-                            } else if (py < 6 && cells[px][py + 1] == 0 && ap > 0) {
-                                ap--;
-                                py++;
-                                cells[px][py] = -1;
-                            }
-                            break;
-                        case kb.ONE:
-                            execActionKey(1);
-                            return;
-                        case kb.TWO:
-                            execActionKey(2);
-                            return;
-                        case kb.THREE:
-                            execActionKey(3);
-                            return;
-                        case kb.FOUR:
-                            execActionKey(4);
-                            return;
-                        case kb.FIVE:
-                            execActionKey(5);
-                            return;
-                        case kb.SIX:
-                            execActionKey(6);
-                            return;
-                        case kb.SEVEN:
-                            execActionKey(7);
-                            return;
-                        case kb.EIGHT:
-                            execActionKey(8);
-                            return;
-                        case kb.NINE:
-                            execActionKey(9);
-                            return;
-                        case kb.ZERO:
-                            execActionKey(0);
-                            return;
-                        default:
-                    }
-                cells[px][py] = -1;
-                document.getElementById("AP_STAT").src = "images/ap_" + ap + ".gif";
-                document.getElementById("PLAYER").style.left = px * 64;
-                document.getElementById("PLAYER").style.top = py * 64;
-                document.images["PLAYERICON"].src = "players/" + prefix + iconid + "_" + dir + ".gif";
-                checkCommands();
-                if (ap <= 0 && freeattack == false && keyHandled == false) {
-                    disableCommands();
-                    serverMessage("POS&PX=" + px + "&PY=" + py, continueAttack);
-                }
-            }
-            Util.insertScript(exec_key.toString());
-        }
-
         if (GM_config.get("FixCombatOverlay")) {
             var elem = $("#DIV_BGSUBFRAME", window.top.document);
             elem.css({
@@ -539,35 +377,6 @@ if (locStr.match(/nbase\.php/)) {                    // Page: nbase.php
 
     } else if (locStr.indexOf("SHOPQUERY=") > -1 || locStr.indexOf("NEWLOC=23") > -1) { // Market Place
         Fixes.marketSubmit();
-    } else if (locStr.indexOf("ACTION=JOURNAL") > -1) { // Journal
-        var journalDir = GM_config.get("JournalSort");
-        if (journalDir != "Alphabetical") {
-            var asc = (journalDir == "Date Ascending");
-            function redraw_journal() {
-                quests.sort(function(a, b) {
-                    var d1 = a.entries[a.entries.length-1].created.split("/");
-                    var d2 = b.entries[b.entries.length-1].created.split("/");
-                    var ad = d1[2] + "-" + d1[0] + "-" + d1[1];
-                    var bd = d2[2] + "-" + d2[0] + "-" + d2[1];
-                    if (ad > bd) {
-                        return -1;
-                    }
-                    if (ad < bd) {
-                        return 1;
-                    }
-                    return 0;
-                });
-                if (asc) {
-                    quests.reverse();
-                }
-                var entries = redraw_quests();
-               redraw_entries(entries);
-            }
-
-            Util.insertScript(redraw_journal.toString() + "\n" +
-                              "var asc = " + ((asc) ? "true" : "false") + ";\n" +
-                              "redraw_journal();");
-        }
     } else if (locStr.indexOf("ADMIN=CHATLOGS") > -1) {
         // Constants
         var DAYS = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
